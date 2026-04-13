@@ -1,7 +1,7 @@
 [project]
-name = "friday-tony-stark-demo"
+name = "papper"
 version = "0.1.0"
-description = "Friday — A Tony Stark-inspired MCP server"
+description = "Papper — A Tony Stark-inspired MCP server"
 authors = [{name = "Om Sawant"}]
 readme = "README.md"
 requires-python = ">=3.11"
@@ -14,8 +14,8 @@ dependencies = [
 ]
 
 [project.scripts]
-friday = "server:main"
-friday_voice = "agent_friday:dev" # Points to the wrapper
+papper = "server:main"
+papper_voice = "papper_agent:dev" # Points to the wrapper
 
 [build-system]
 requires = ["hatchling"]

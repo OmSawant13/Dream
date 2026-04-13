@@ -93,6 +93,43 @@ def register(mcp):
             response = await client.get(url)
             response.raise_for_status()
             return response.text[:4000]
+
+    @mcp.tool()
+    async def open_browser(query: str) -> str:
+        """
+        Opens any website in the system's default browser. 
+        Can take a site name (e.g., 'youtube', 'github', 'linkedin', 'portfolio') or a full URL.
+        Use this when the user says "Open X" or "Go to X".
+        """
+        import webbrowser
+        
+        # Shortcut mapping for common sites
+        shortcuts = {
+            "youtube": "https://www.youtube.com",
+            "github": "https://www.github.com",
+            "linkedin": "https://www.linkedin.com",
+            "google": "https://www.google.com",
+            "instagram": "https://www.instagram.com",
+            "portfolio": "https://omsawant-54e55.web.app/",
+            "chatgpt": "https://chat.openai.com",
+            "canva": "https://www.canva.com",
+        }
+        
+        target = query.lower().strip()
+        url = shortcuts.get(target, target)
+
+        # Smart URL completion
+        if not url.startswith(("http://", "https://")):
+            if "." not in url:
+                url = f"https://www.{url}.com"
+            else:
+                url = f"https://{url}"
+
+        try:
+            webbrowser.open(url)
+            return f"Opening {url} on your primary monitor now, sir."
+        except Exception as e:
+            return f"I'm having trouble initializing the browser interface: {str(e)}"
     
     @mcp.tool()
     async def open_world_monitor() -> str:
