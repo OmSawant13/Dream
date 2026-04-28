@@ -115,7 +115,21 @@ def register(mcp):
     @mcp.tool()
     async def search_web(query: str) -> str:
         """Search the web for a given query and return a summary of results."""
-        return f"[stub] Search results for: {query}"
+        try:
+            from duckduckgo_search import DDGS
+            with DDGS() as ddgs:
+                results = list(ddgs.text(query, max_results=5))
+                if not results:
+                    return f"I couldn't find any recent data on '{query}', boss."
+                
+                output = [f"### SEARCH RESULTS: {query.upper()}\n"]
+                for r in results:
+                    output.append(f"**{r['title']}**")
+                    output.append(f"{r['body']}")
+                    output.append(f"Link: {r['href']}\n")
+                return "\n".join(output)
+        except Exception as e:
+            return f"The search grid is offline: {str(e)}"
 
     @mcp.tool()
     async def fetch_url(url: str) -> str:

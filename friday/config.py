@@ -13,9 +13,10 @@ class Config:
     SERVER_NAME: str = os.getenv("SERVER_NAME", "Friday")
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
 
-    # External API keys (add as needed)
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    SEARCH_API_KEY: str = os.getenv("SEARCH_API_KEY", "")
-
+    # LLM Settings
+    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "auto")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+    OLLAMA_MODEL: str = os.getenv("OLLAMA_MODEL", "llama3.2")
+    GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
 
 config = Config()

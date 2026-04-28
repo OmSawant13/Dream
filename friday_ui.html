@@ -68,7 +68,7 @@ function addMessage(role, text) {
   chatEl.scrollTop = chatEl.scrollHeight;
 }
 
-let ws = new WebSocket('ws://localhost:9090');
+let ws = new WebSocket('ws://localhost:8000/ws');
 ws.onmessage = (e) => {
   const data = JSON.parse(e.data);
   if (data.type === 'response') { addMessage('friday', data.text); speak(data.text); }

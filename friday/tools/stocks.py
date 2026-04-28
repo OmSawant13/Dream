@@ -37,3 +37,14 @@ def get_market_summary() -> str:
             summary.append(f"{name}: {change:+.2f}%")
         except: continue
     return " | ".join(summary) if summary else "Markets currently unavailable."
+
+def register(mcp):
+    @mcp.tool()
+    def get_stock_price_tool(symbol: str) -> str:
+        """Get the live price, change, and market cap for any ticker symbol."""
+        return get_stock_price(symbol)
+
+    @mcp.tool()
+    def get_market_summary_tool() -> str:
+        """Brief overview of major indices (S&P 500, NASDAQ, Dow)."""
+        return get_market_summary()

@@ -1,0 +1,82 @@
+[
+  {
+    "role": "user",
+    "content": "INFO     [FridayBrain] Command Uplink: send a WhatsApp message to Soham Karandikar  saying Good Afternoon your friend friday ai"
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: ULTIMATE ROOT SUCCESS: Database mapped 'Soham Karandikar' to 917588720672. Message delivered."
+  },
+  {
+    "role": "user",
+    "content": "ERROR    [FridayBrain] Cloud Logic Error: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  },
+  {
+    "role": "assistant",
+    "content": "Boss, it looks like we have a cloud logic error. TOOL: run_terminal_command\u001b[20D\u001b[K\nrun_terminal_command(contact=\"FridayBrain\", message=\"ls -l /usr/local/model\u001b[16D\u001b[K\n/usr/local/models/ gemini-1.5-flash\")"
+  },
+  {
+    "role": "user",
+    "content": "WARNING  [FridayBrain] API Key restricted. Forcing Local Core."
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: Meeting mode initialized: 'Boss'. I'm recording all critical data now, boss."
+  },
+  {
+    "role": "user",
+    "content": "INFO     [FridayBrain] Firing Local Core (llama3.2)..."
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: Meeting mode initialized: 'Boss'. I'm recording all critical data now, boss."
+  },
+  {
+    "role": "user",
+    "content": "F.R.I.D.A.Y.: TOOL: send_whatsapp_message(contact=\"Soham Karandikar\", message=\"Good"
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: ULTIMATE ROOT SUCCESS: Database mapped 'Soham Karandikar' to 917588720672. Message delivered."
+  },
+  {
+    "role": "user",
+    "content": "Afternoon your friend Friday AI\")"
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: Opening https://Boss on your primary display now, boss."
+  },
+  {
+    "role": "user",
+    "content": "BOSS: send a WhatsApp message to Soham Karandikar  saying Good Afternoon your friend friday ai"
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: ULTIMATE ROOT SUCCESS: Database mapped 'Soham Karandikar' to 917588720672. Message delivered."
+  },
+  {
+    "role": "user",
+    "content": "INFO     [FridayBrain] Command Uplink: send a WhatsApp message to Soham Karandikar  saying Good Afternoon your friend friday ai"
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: Affirmative. Executing Soham Karandikar on Good Afternoo\u001b[8D\u001b[K Afternoon your friend Friday AI."
+  },
+  {
+    "role": "user",
+    "content": "ERROR    [FridayBrain] Cloud Logic Error: 404 models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods."
+  },
+  {
+    "role": "assistant",
+    "content": "Boss, it looks like you're experiencing an error with our cloud logic servi\u001b[5D\u001b[K\nservice. I'm going to attempt to resolve this issue by checking on availabl\u001b[8D\u001b[K\navailable models. TOOL: list_models(contact=\"Cloud Logic\", message=\"Availab\u001b[16D\u001b[K\nmessage=\"Available Models\")"
+  },
+  {
+    "role": "user",
+    "content": "WARNING  [FridayBrain] API Key restricted. Forcing Local Core."
+  },
+  {
+    "role": "assistant",
+    "content": "Action completed: Lockdown protocol engaged. Audio muted. System secured, boss."
+  }
+]

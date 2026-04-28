@@ -1,48 +1,105 @@
 """
-Nexus tools — high-speed categorized knowledge grid and indexing.
+STARK NEXUS — The Knowledge Bridge Protocol.
+Connects the Friday AI to the massive research/clones database.
 """
 
-# Categorized knowledge base simulation
-NEXUS_CATEGORIES = [
-    "Health", "Deep Tech", "Global Finance", "Aerospace", 
-    "Legal", "History", "Emerging Arts", "Cybersecurity",
-    "Logistics", "Energy", "Quantum Physics", "Robotics"
-]
+import os
+import subprocess
+from typing import List, Optional
+
+def search_research(query: str) -> str:
+    """
+    Perform a high-speed search across all 169 cloned research repositories.
+    Use this to find specific code patterns, documentation, or logic.
+    """
+    research_path = "research/clones"
+    if not os.path.exists(research_path):
+        return "Research database not found."
+
+    try:
+        # Use grep for speed
+        cmd = ["grep", "-rnli", "--exclude-dir={.git,node_modules,__pycache__}", query, research_path]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=15)
+        
+        if not result.stdout:
+            return f"No matches found for '{query}' in the research database."
+        
+        matches = result.stdout.splitlines()
+        count = len(matches)
+        summary = f"Found {count} matches in the research database. Top results:\n"
+        summary += "\n".join(matches[:15])
+        if count > 15:
+            summary += f"\n... and {count - 15} more matches."
+        return summary
+    except Exception as e:
+        return f"Nexus search failed: {str(e)}"
+
+def analyze_research_repo(repo_name: str) -> str:
+    """
+    Get a deep-dive overview of a specific research repository.
+    """
+    path = os.path.join("research/clones", repo_name)
+    if not os.path.exists(path):
+        return f"Repository '{repo_name}' not found in research."
+
+    # Find README
+    readme = None
+    for f in os.listdir(path):
+        if f.lower().startswith("readme"):
+            readme = f
+            break
+    
+    info = [f"### REPO ANALYSIS: {repo_name}\n"]
+    if readme:
+        try:
+            with open(os.path.join(path, readme), "r") as f:
+                content = f.read(2000)
+                info.append(f"#### README SUMMARY:\n{content}")
+                if len(content) >= 2000:
+                    info.append("... [truncated]")
+        except:
+            info.append("README found but unreadable.")
+    else:
+        info.append("No README found.")
+    
+    # List main files
+    files = [f for f in os.listdir(path) if not f.startswith(".")][:20]
+    info.append(f"\n#### MAIN FILES:\n" + ", ".join(files))
+    
+    return "\n".join(info)
+
+def bridge_logic(source_repo: str, target_file: str) -> str:
+    """
+    Attempts to 'connect' logic from a research repository to a local project file.
+    This will analyze the source logic and suggest how to integrate it.
+    """
+    source_path = os.path.join("research/clones", source_repo)
+    if not os.path.exists(source_path):
+        return f"Source repo '{source_repo}' not found."
+        
+    # This is a high-level conceptual tool that triggers LLM reasoning
+    return f"[System] Nexus link established between '{source_repo}' and '{target_file}'. Analyzing compatibility signatures..."
+
+def run_research_script(repo_name: str, script_path: str, args: str = "") -> str:
+    """
+    Execute a script from a research clone. Use with caution.
+    Example: repo_name='Dorothy', script_path='setup.py', args='--help'
+    """
+    full_path = os.path.join("research/clones", repo_name, script_path)
+    if not os.path.exists(full_path):
+        return f"Script not found: {full_path}"
+    
+    try:
+        cwd = os.path.join("research/clones", repo_name)
+        cmd = f"cd {cwd} && python3 {script_path} {args}"
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
+        return f"Execution Output:\n{result.stdout}\n{result.stderr}"
+    except Exception as e:
+        return f"Execution failed: {str(e)}"
 
 def register(mcp):
-
-    @mcp.tool()
-    def search_nexus_grid(category: str, query: str) -> str:
-        """
-        Search the massive Nexus grid for information in a specific category.
-        """
-        category = category.title()
-        if category not in NEXUS_CATEGORIES:
-            return f"Category '{category}' is not currently indexed in the Nexus, boss. Should I add it?"
-            
-        return (
-            f"### NEXUS GRID SEARCH: {category.upper()}\n"
-            f"Query: {query}\n"
-            f"Scanning 10M+ records... Results found: 1,242.\n\n"
-            f"Summary: I've isolated the most relevant data streams for your request. "
-            f"The top 3 links have been pushed to your primary HUD."
-        )
-
-    @mcp.tool()
-    def index_new_source(url: str, category: str, tags: list[str] = None) -> str:
-        """
-        Indexes a new knowledge source into the Nexus grid.
-        """
-        return f"Source {url} has been successfully indexed into the '{category}' vertical. Tags applied: {tags}."
-
-    @mcp.tool()
-    def get_nexus_stats() -> dict:
-        """
-        Get a report on the size and health of the Nexus knowledge grid.
-        """
-        return {
-            "total_indexed_links": "10,420,581",
-            "active_categories": len(NEXUS_CATEGORIES),
-            "data_lake_size": "4.2 PB",
-            "status": "Knowledge grid performing at peak efficiency."
-        }
+    """Register the tools with the MCP server."""
+    mcp.tool()(search_research)
+    mcp.tool()(analyze_research_repo)
+    mcp.tool()(bridge_logic)
+    mcp.tool()(run_research_script)

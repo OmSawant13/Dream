@@ -3,7 +3,7 @@ Tool registry — imports and registers all tool modules with the MCP server.
 Add new tool modules here as you build them.
 """
 
-from friday.tools import web, system, utils, memory, host, media, terminal, files, scheduler, security, research, architect, wellness, autopilot, finance, translator, science, network, meetings, shell, creative, charts, logistics, persona, space, defense, hive, bio, legacy, philosophy, ambition, network_tree, oracle, foresight, evolution, smith, nexus, spider, phoenix, satellite, quantum, office, lifestyle, janitor, procurement, stocks, simulation, legal, zen, gaming, sentinel, overclock, ghost, titan_core, social, storm, strategist, graph, architect_v3, iot, dashboard, swarm, ceo, forensics, dark_web, factory, science_pro, cyber, engineering, intelligence, multimodal_rag, sonar, nexus_crawler, market_intel, red_team
+from friday.tools import web, system, utils, memory, host, media, terminal, files, scheduler, security, research, architect, wellness, autopilot, finance, translator, science, network, meetings, shell, creative, charts, logistics, persona, space, defense, hive, bio, legacy, philosophy, ambition, network_tree, oracle, foresight, evolution, smith, nexus, spider, phoenix, satellite, quantum, office, lifestyle, janitor, procurement, stocks, simulation, legal, zen, gaming, sentinel, overclock, ghost, titan_core, social, storm, strategist, graph, architect_v3, iot, dashboard, swarm, ceo, forensics, dark_web, factory, science_pro, cyber, engineering, intelligence, multimodal_rag, sonar, nexus_crawler, market_intel, red_team, whatsapp, web_browser
 
 
 def register_all_tools(mcp):
@@ -84,6 +84,10 @@ def register_all_tools(mcp):
     nexus_crawler.register(mcp)
     market_intel.register(mcp)
     red_team.register(mcp)
+    whatsapp.register(mcp)
+    stocks.register(mcp)
+    nexus.register(mcp)
+    web_browser.register(mcp)
 
 
 

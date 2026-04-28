@@ -48,3 +48,9 @@ def scan_room_presence(sensitivity: float = 1.0) -> str:
                 f"Bio-metrics: {active_count} active network nodes.")
     except Exception as e:
         return f"Sonar Error: {e}"
+
+def register(mcp):
+    @mcp.tool()
+    def scan_room_presence_tool(sensitivity: float = 1.0) -> str:
+        """Scans the local network to detect active devices and estimate occupancy."""
+        return scan_room_presence(sensitivity)
