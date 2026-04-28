@@ -1,0 +1,20 @@
+# PLAYWRIGHT DEEP DIVE: FRAMES & LIFECYCLE
+(Analysis of packages/playwright-core/src/server/frames.ts)
+
+## 1. THE NAVIGATION STEWARD (FrameManager)
+- **Logic:** Playwright doesn't trust the browser's 'load' event. It tracks every frame in a 'Tree' structure.
+- **Key Discovery:** It uses `FrameManager` to intercept CDP events like `Page.frameNavigated` and `Page.navigatedWithinDocument`.
+- **LEVERAGE:** In Papper Terminal, we will implement a `SafeWait` that checks if the 'Main Frame' is stable before we allow the LLM to take its next action.
+
+## 2. ISOLATED WORLD INJECTION
+- **Logic:** `frames.ts` manages 'Isolated Worlds'. This allows Playwright to run JavaScript in the page *without* the website's own scripts being able to see or interfere with it.
+- **LEVERAGE:** This is the ultimate bot-detection bypass. We will run our AXTree extraction in an isolated world so that websites like Google/YouTube don't know they are being 'perceived' by an agent.
+
+## 3. RACE CONDITIONS (The 'Race' Utility)
+- **Algorithm:** Playwright uses a 'Race' utility to wait for multiple events (e.g., Click OR Navigation OR Error).
+- **LEVERAGE:** We will update Papper's `click_index` to 'race' between a successful click and a page navigation, ensuring the agent doesn't get stuck if a click triggers a fast redirect.
+
+---
+DEEP ANALYSIS: SYNCED WITH USER RESEARCH.
+ENGINEER: ANTIGRAVITY
+---
