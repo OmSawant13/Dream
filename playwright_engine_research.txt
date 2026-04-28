@@ -1,0 +1,36 @@
+# PLAYWRIGHT ENGINE: INTERNAL RESEARCH REPORT
+(Extracted from Microsoft/Playwright Source Code Audit)
+
+## 1. THE ACTIONABILITY PIPELINE (The 'Flaky-Kill' Logic)
+Playwright internally executes a 'Checklist' before any interaction (click, type, etc.).
+- **Checks:**
+  1. **Attached:** Is it in the DOM?
+  2. **Visible:** Is it non-hidden and > 0 size?
+  3. **Stable:** Has its bounding box stopped moving for 2+ animation frames?
+  4. **Enabled:** Is it not 'disabled'?
+  5. **Receives Events:** Is it the top-most element at those coordinates?
+- **LEVERAGE:** In Papper Terminal, we should mirror this 5-point check in our `browser.py` to ensure 100% click success on dynamic sites like YouTube.
+
+## 2. INJECTED SCRIPTS & CDP BATCHING
+- **Snippet Concept:** Instead of sending 10 CDP commands, Playwright sends 1 injected JS script that performs multiple checks and returns a single result.
+- **Optimization:** We will use `page.evaluate_handle` to run complex perception logic (like AXTree filtering) browser-side.
+
+## 3. PROGRESS CONTROLLER (Smart Waiting)
+- **Algorithm:** The 'ProgressController' wraps actions in a retry-loop that only breaks when:
+  a) The action succeeds.
+  b) The global timeout is reached.
+  c) The page navigates or crashes.
+- **LEVERAGE:** We will implement a `ProgressWaiter` for Papper that retries `click_index` if the element isn't stable yet.
+
+## 4. ARIA SNAPSHOT LOGIC
+- **Logic:** Resolve 'Accessible Name' using:
+  - `aria-labelledby` / `aria-label`
+  - Form `<label>` associations
+  - `alt` tags (for images)
+  - Text content
+- **LEVERAGE:** We will update our `get_view` to follow the W3C Accessible Name computation spec for 100% accurate labeling.
+
+---
+RESEARCH STATUS: COMPLETE.
+ENGINEER: ANTIGRAVITY
+---

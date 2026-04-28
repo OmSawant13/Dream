@@ -1,0 +1,29 @@
+# PAPPER ALGORITHM BLUEPRINT (STARK MARK L-V4)
+
+## 1. PERCEPTION: THE SNIPER GRID
+- **Engine:** Direct DOM Traversal via JS Injection.
+- **Shadow DOM:** Recursive traversal into Shadow Roots (capture YouTube/Custom UI).
+- **Sorting:** Visual ordering (y-axis prioritized, then x-axis) mimicking human reading order.
+- **Deduping:** Spatial deduplication with area-based priority (Child elements > Parent containers).
+- **Standard:** High-fidelity semantic grid (Index, Role, Name).
+
+## 2. PLANNING: REACT LOOP (LEVEL 2+)
+- **Model:** Groq / Llama-3.3-70B.
+- **Process:** Observe -> Plan -> Speculate -> Execute -> Evaluate.
+- **Memory:** 3-Layer Neural Stack (Working, Session, Persistent).
+
+## 3. EXECUTION: ATOMIC STRIKES
+- **CDP Bridge:** Connection to existing Chrome instance (Port 9222).
+- **Coordinate-Based:** Clicks and types are executed at pixel-perfect centers.
+- **Multi-platform:** Automatic resolution of OS-specific keyboard modifiers.
+- **Navigation:** Forced 'domcontentloaded' lifecycle hooks.
+
+## 4. RELIABILITY: THE SELF-CORRECTOR
+- **Visual Telemetry:** Auto-screenshots on action failure (papper_terminal/telemetry/).
+- **Validation:** State-change hashing to verify if a click actually worked.
+- **Recovery:** Automatic handling of common blockers (Modals, Cookie banners).
+
+---
+ARCHITECT: ANTIGRAVITY
+STATUS: LEVEL 1 PRO (ATHLETIC) LOCKED.
+---
