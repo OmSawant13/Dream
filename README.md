@@ -1,48 +1,59 @@
-# 🦾 Papper Browser Agent (Level 1 Stable)
+# 🦾 Papper Browser Agent (Level 2 Verified)
 
 Papper is a high-performance, autonomous browser automation agent designed to evolve from a reactive tool into a proactive cognitive entity. Built for speed, precision, and industrial-grade stability.
 
-## 🚀 Current Progress: Level 1 (The Body)
-We have successfully implemented the core "Physical" layer of the agent, enabling robust interaction with any modern web application.
+---
 
-### Key Components:
-- **`browser/controller.py`**: The central nervous system. Manages Playwright and CDP (Chrome DevTools Protocol) connections.
-- **`browser/observer.py`**: The "Eye". Implements a high-speed Shadow DOM perception grid that assigns unique indices to interactive elements with O(1) deduplication.
-- **`browser/actions.py`**: The "Muscle". Provides a suite of atomic interactions (Click, Type, Scroll, Key Press, Navigate) with built-in telemetry (automatic screenshots on failure).
-- **`main.py`**: The interactive terminal interface for manual control and testing.
+## 🚀 Current Status: Level 2 (The Brain)
+We have successfully transitioned from scripted actions to an **Autonomous Reasoning Agent**. Papper can now take high-level human goals and decompose them into multi-step browser interactions.
 
-## 🛠️ Tech Stack
-- **Engine**: Playwright (Chromium)
-- **Perception**: Custom DOM-to-Grid Mapping
-- **Logic**: Async Python 3.10+
-- **Telemetry**: Rich logging & Automatic Screenshots
+### **Verified Capabilities (Level 2):**
+- **Autonomous Navigation**: Can move through multiple pages to reach a target.
+- **Search & Filter**: Verified success on e-commerce (Flipkart) and news (BBC).
+- **Multi-Step Logic**: Can find specific repositories on GitHub and navigate to sub-sections.
+- **High-Speed Planning**: Integrated with **Groq (Llama 3.3 70B)** for sub-second thinking latency.
+
+---
+
+## 📊 Level Comparison
+
+| Feature | **Level 1 (The Body)** | **Level 2 (The Brain)** | **Level 3 (The Intelligence)** |
+| :--- | :--- | :--- | :--- |
+| **Control** | Manual / Scripted | **Autonomous Reasoning** | Cognitive & Persistent |
+| **Logic** | Single Action | **Multi-Step Planning** | Pattern Matching & Memory |
+| **Perception** | Raw DOM Grid | **Semantic Understanding** | Data Extraction & Content Parsing |
+| **State** | Blind execution | Basic Error Logs | **State Verification & Recovery** |
+
+### ❌ What Level 2 Still CANNOT Do:
+- **Remember Past Sessions**: Every task starts with a blank slate (no long-term memory).
+- **Verify Success**: It assumes a click worked if the code didn't crash (no state validation).
+- **Read Values**: It sees text but doesn't "understand" that ₹20,000 is less than ₹30,000.
+- **Parallel Tasks**: Can only handle one tab/task at a time.
+- **Extract Data**: Can navigate to info but cannot return it as a structured JSON/Report.
+
+---
+
+## 🏗️ Future Architecture: Level 3 (Cognitive Intelligence)
+Level 3 focuses on **Deep Understanding** and **Data Extraction**. The agent will move beyond simple clicks to verify its own actions, remember past workflows across sessions, and return structured data (like price comparisons or order status) directly to the user.
+
+
+---
 
 ## 📂 Project Structure
 ```text
-papper_terminal/
-├── agent/       # Future Orchestrator
-├── browser/     # Core Interaction Logic (Muscle & Eye)
-├── planner/     # Future AI Cognitive Layer (Brain)
-├── memory/      # Task Tracing & Loop Prevention
+repo_study/
+├── agent/       # PapperAgent (Autonomous Orchestrator)
+├── browser/     # Muscle & Eye (Actions & Perception Grid)
+├── planner/     # Cognitive Layer (Groq/Llama Client)
+├── memory/      # Session Tracking (Level 3 Expansion Point)
 ├── telemetry/   # Debug Screenshots & Logs
-└── main.py      # Entry Point
+└── main.py      # Entry Point (Interactive & AI Mode)
 ```
 
-## 🏁 Getting Started
-1. **Install Dependencies**:
-   ```bash
-   pip install playwright pydantic python-dotenv
-   playwright install chromium
-   ```
-2. **Run Manual Mode**:
-   ```bash
-   python main.py
-   ```
-
-## 🗺️ Roadmap
-- [x] **Phase 1 (Level 1)**: Manual Interaction & Perception Grid.
-- [ ] **Phase 2 (Level 2)**: Autonomous Brain (Ollama/Gemini Integration).
-- [ ] **Phase 3 (Level 3)**: Human-in-the-loop & Emotional Intelligence.
+## 🛠️ Setup
+1. **Environment**: Copy `.env.example` to `.env` and add your `GROQ_API_KEY`.
+2. **Dependencies**: `pip install -r requirements.txt`
+3. **Run**: `python3 main.py ai "your task description"`
 
 ---
-*Created by Om Sawant & Antigravity AI*
+*Created by Om Sawant*

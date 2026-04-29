@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+papper.log
+telemetry/*.png
+telemetry/*.json
+.DS_Store

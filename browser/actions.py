@@ -19,26 +19,29 @@ class BrowserActions:
         """Force-click center coordinates of an index."""
         target = self.observer.get_element(index)
         if not target:
-            logger.error(f"Error: Index {index} not found.")
-            return False
+            msg = f"Error: Index {index} not found."
+            logger.error(msg)
+            return {"status": "error", "message": msg}
         
         try:
             page = await self.controller.get_active_page()
             await page.mouse.click(target['x'], target['y'])
             await page.wait_for_load_state("domcontentloaded", timeout=3000)
             await asyncio.sleep(0.5)
-            return True
+            return {"status": "success", "message": f"Clicked element at index {index}"}
         except Exception as e:
-            logger.error(f"Strike Failed at index {index}: {e}")
+            msg = f"Strike Failed at index {index}: {e}"
+            logger.error(msg)
             await self.take_error_screenshot(f"fail_click_{index}")
-            return False
+            return {"status": "error", "message": msg}
 
     async def type_at_index(self, index, text):
         """Targeted Entry: Click, clear, and type."""
         target = self.observer.get_element(index)
         if not target:
-            logger.error(f"Error: Index {index} not found.")
-            return False
+            msg = f"Error: Index {index} not found."
+            logger.error(msg)
+            return {"status": "error", "message": msg}
         
         try:
             page = await self.controller.get_active_page()
@@ -49,11 +52,12 @@ class BrowserActions:
             await page.keyboard.press("Backspace")
             
             await page.keyboard.type(text)
-            return True
+            return {"status": "success", "message": f"Typed '{text}' at index {index}"}
         except Exception as e:
-            logger.error(f"Entry Failed at index {index}: {e}")
+            msg = f"Entry Failed at index {index}: {e}"
+            logger.error(msg)
             await self.take_error_screenshot(f"fail_type_{index}")
-            return False
+            return {"status": "error", "message": msg}
 
     async def scroll(self, direction="down", amount=500):
         """Scroll the page to reveal more content."""
@@ -62,11 +66,12 @@ class BrowserActions:
             scroll_dist = amount if direction == "down" else -amount
             await page.evaluate(f"window.scrollBy(0, {scroll_dist})")
             await asyncio.sleep(1)
-            return True
+            return {"status": "success", "message": f"Scrolled {direction} by {amount}px"}
         except Exception as e:
-            logger.error(f"Scroll Failed: {e}")
+            msg = f"Scroll Failed: {e}"
+            logger.error(msg)
             await self.take_error_screenshot("fail_scroll")
-            return False
+            return {"status": "error", "message": msg}
             
     async def press_key(self, key_name):
         """Press a specific keyboard key."""
@@ -74,10 +79,11 @@ class BrowserActions:
             page = await self.controller.get_active_page()
             await page.keyboard.press(key_name)
             await page.wait_for_load_state("domcontentloaded", timeout=3000)
-            return True
+            return {"status": "success", "message": f"Pressed key: {key_name}"}
         except Exception as e:
-            logger.error(f"Key Press Failed: {e}")
-            return False
+            msg = f"Key Press Failed: {e}"
+            logger.error(msg)
+            return {"status": "error", "message": msg}
 
     async def take_error_screenshot(self, name):
         """Save a telemetry snapshot for debugging using Path resolution."""
@@ -98,8 +104,9 @@ class BrowserActions:
             if not url.startswith("http"):
                 url = f"https://{url}" if "." in url else f"https://www.{url}.com"
             await page.goto(url, wait_until="domcontentloaded")
-            return True
+            return {"status": "success", "message": f"Navigated to {url}"}
         except Exception as e:
-            logger.error(f"Navigation Failed: {e}")
+            msg = f"Navigation Failed: {e}"
+            logger.error(msg)
             await self.take_error_screenshot("fail_nav")
-            return False
+            return {"status": "error", "message": msg}
