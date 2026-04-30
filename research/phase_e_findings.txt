@@ -1,0 +1,54 @@
+# PHASE E: PERSISTENT MEMORY & LOOP RESILIENCE RESEARCH
+Date: 2026-04-30
+
+## 1. BabyAGI (Task-Driven Execution)
+- **Core Algorithm**: 
+  1. Pull the first task from the task list.
+  2. Execute the task.
+  3. Enrich the result and store it in memory.
+  4. Create new tasks based on the result.
+  5. Prioritize the task list using LLM.
+- **Memory Implementation**: Uses a simple list (deque) for tasks. Results are often stored in a vector DB (Pinecone/Weaviate) for retrieval.
+- **Key Lesson for Papper Agent**: 
+  * Re-prioritization: After every step, the agent should re-evaluate if the current "plan" is still valid or if a new task needs to be inserted.
+  * Result Enrichment: Don't just store "Success"; store "What did we learn that helps future tasks?".
+
+## 2. AutoGPT (Action History & Memory Abstraction)
+- **Architecture**:
+  * `MemoryProvider` (Abstract Base Class): Separates the logic of *what* is stored from *where* it is stored.
+  * Action Logging: Every cycle logs (Thought, Reasoning, Plan, Command, Arguments).
+- **Loop Resilience**: 
+  * Uses a "Cycle Count" and "Budget" system.
+  * History lookup: Before executing a command, it checks if that exact command has failed N times before.
+- **Key Lesson for Papper Agent**:
+  * Our `actions` table must include `thought` and `reasoning` columns to provide context to the LLM during retrieval.
+  * Implementation of a "Failure Signature": If (StateHash + Action) leads to "No Change" or "Error" repeatedly, mark it as a blocker.
+
+## 3. MemGPT / Letta (Cognitive Memory Architecture)
+- **Concept**: OS-style memory management.
+  * **Core Memory**: Fixed context window (Persona, Human Context).
+  * **Recall Memory**: Rolling buffer of recent events.
+  * **Archival Memory**: Massive searchable database (SQLite/Postgres).
+- **Retrieval Mechanism**: The agent has explicit tools to "query" its own memory (`search_memory`, `archive_memory`).
+- **Key Lesson for Papper Agent**:
+  * "Working Context" vs "Archival Context": We should only inject the 3-5 most similar past "cases" (steps) into the prompt to save tokens.
+  * Self-Correction: When the agent realizes it is looping, it should trigger a "Recall Memory" check to see "When did I last see this state and what failed?".
+
+## 4. Synthesis: The "Phase E" Architectural Plan
+1. **State Signature (Hashing)**: 
+   - Generate a hash of the UI structure (interactive elements only) + Current URL.
+   - If StateHash_current == StateHash_previous, we are likely in a loop.
+2. **The "Blocker" Table**:
+   - Stores (StateHash, ActionProposal, Outcome).
+   - If Outcome == "Failed/Loop", this becomes a "No-Go" zone.
+3. **CBR Cycle (Case-Based Reasoning)**:
+   - **Retrieve**: Use Hybrid RRF (Keyword + Structural Similarity) to find past steps.
+   - **Reuse**: Inject those steps as few-shot examples: "In a similar situation, the agent did X and achieved Y."
+   - **Revise**: Update the outcome in the DB if the new attempt works differently.
+   - **Retain**: Every successful step is a new "Golden Case" in the memory.
+
+## 5. Technology Choice: SQLite (FTS5)
+- **Why?**:
+  * Zero-latency local storage.
+  * FTS5 (Full-Text Search) allows ultra-fast keyword matching on task descriptions.
+  * Relational structure allows linking `workflows` to `steps` to `outcomes` perfectly.

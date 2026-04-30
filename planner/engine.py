@@ -8,8 +8,12 @@ class PlanningEngine:
     def __init__(self, client):
         self.client = client
 
-    async def generate_plan(self, task, current_view, history):
-        """Prepare context and call the LLM."""
+    async def generate_plan(self, task, current_view, history, cbr_context=""):
+        """Prepare context and call the LLM.
+        
+        Args:
+            cbr_context: Phase E past-experience block to inject (optional).
+        """
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT}
         ]
@@ -21,6 +25,10 @@ class PlanningEngine:
         prompt = f"Task: {task}\n\n{current_view}\n\nHistory:\n"
         for h in history[-5:]: # Last 5 actions for context
             prompt += f"- {h}\n"
+
+        # Phase E: Inject learned experience from past similar workflows
+        if cbr_context:
+            prompt += f"\n{cbr_context}\n"
             
         messages.append({"role": "user", "content": prompt})
         

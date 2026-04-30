@@ -98,3 +98,12 @@ class BrowserObserver:
 
     def get_element(self, index):
         return self.element_map.get(str(index))
+
+    async def capture_screenshot(self):
+        """Capture screenshot of current page for visual hashing (Phase F)."""
+        try:
+            page = await self.controller.get_active_page()
+            return await page.screenshot()  # Returns PNG bytes
+        except Exception as e:
+            logger.error(f"Screenshot Error: {e}")
+            return b""  # Return empty bytes on error

@@ -10,7 +10,7 @@ load_dotenv()
 logger = logging.getLogger("papper-client")
 
 class LLMClient:
-    """The Voice: Structured communication with LLMs (Groq, OpenAI, Ollama)."""
+    """The Voice: Structured communication with LLMs (Groq, OpenAI, OpenRouter, Ollama)."""
     def __init__(self, provider="ollama", model=None):
         self.provider = provider
         
@@ -23,6 +23,12 @@ class LLMClient:
         elif provider == "openai":
             self.model = model or "gpt-4o"
             self.client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        elif provider == "openrouter":
+            self.model = model or "groq/llama-3.3-70b-versatile"
+            self.client = AsyncOpenAI(
+                base_url="https://openrouter.ai/api/v1",
+                api_key=os.getenv("OPENROUTER_API_KEY")
+            )
         else: # Default to Ollama
             self.model = model or "llama3.1:8b"
             self.client = AsyncOpenAI(

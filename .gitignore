@@ -3,6 +3,7 @@ __pycache__/
 *$py.class
 .env
 papper.log
+papper.db
 telemetry/*.png
 telemetry/*.json
 .DS_Store
