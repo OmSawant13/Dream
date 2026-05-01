@@ -527,3 +527,76 @@ class PersistentMemory:
             "blockers": bl["c"],
             "success_rate": sr["rate"] or 0.0,
         }
+
+    # ==================================================================
+    # 7. PHASE F: Cross-Workflow & Recovery Helpers
+    # ==================================================================
+
+    def check_cross_workflow_failure_signature(
+        self, action_type, url, text_hash=None, threshold=3
+    ):
+        """Check if this action+state combo failed across ALL past workflows.
+
+        Unlike check_failure_signature (which checks within ONE workflow),
+        this looks across the entire history. If clicking at amazon.com
+        failed 3+ times across 3 different tasks, something is structurally
+        wrong with that action at that URL — avoid it entirely.
+
+        Returns True if this is a known cross-workflow dead-end.
+        """
+        params = [action_type, "error"]
+        text_clause = ""
+
+        if text_hash:
+            text_clause = "AND sh.text_hash = ?"
+            params.append(text_hash)
+
+        # Use domain matching (LIKE '%url%') so amazon.com/phones and
+        # amazon.com/laptops both match a check for "amazon.com"
+        params.append(f"%{url}%")
+
+        rows = self.db.fetchall(
+            f"""SELECT COUNT(DISTINCT a.workflow_id) as cnt FROM actions a
+                JOIN state_hashes sh ON a.workflow_id = sh.workflow_id AND a.step = sh.step
+                WHERE a.action_type = ? AND a.result_status = ?
+                {text_clause}
+                AND sh.url LIKE ?""",
+            params,
+        )
+        count = rows[0]["cnt"] if rows else 0
+        if count >= threshold:
+            logger.warning(
+                f"Cross-workflow failure: {action_type} at {url} "
+                f"failed in {count} workflows (threshold={threshold})"
+            )
+        return count >= threshold
+
+    def get_recent_actions_with_states(self, workflow_id, limit=5):
+        """Get recent actions joined with their state info.
+
+        Used by LoopResolver to build a summary of "what the agent has been
+        doing and what happened to the page each time."
+
+        Returns list of dicts with action + state columns.
+        """
+        rows = self.db.fetchall(
+            """SELECT a.step, a.action_type, a.result_status, a.state_changed,
+                      sh.url, sh.visual_hash, sh.text_hash
+               FROM actions a
+               LEFT JOIN state_hashes sh
+                   ON a.workflow_id = sh.workflow_id AND a.step = sh.step
+               WHERE a.workflow_id = ?
+               ORDER BY a.step DESC, a.action_sequence DESC
+               LIMIT ?""",
+            (workflow_id, limit),
+        )
+        return [dict(r) for r in rows]
+
+    def record_finding(self, workflow_id, key, value, step):
+        """Record a semantic finding (Phase H TaskMemory integration point).
+
+        Phase F doesn't use this yet, but Phase H will store structured
+        findings like "price = $299" or "title = iPhone 15 Pro" that the
+        agent discovers during execution.
+        """
+        pass  # Stub — no-op until Phase H

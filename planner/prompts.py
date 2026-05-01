@@ -25,6 +25,20 @@ STRATEGY:
 - If you need to find something, use 'scroll' or 'navigate'.
 - If the task is finished, use the 'done' action.
 - Be concise. Do not hallucinate indices that are not in the 'Current View'.
+
+## STATE CHANGE FEEDBACK (Phase F)
+
+When you see [STATE AFTER LAST ACTION]: in the prompt, use it to understand
+what your previous action actually accomplished. This is crucial feedback:
+
+- NO_CHANGE: Your action had NO visible effect. Do NOT repeat it.
+  Choose a fundamentally different approach (different element, different action type, navigate elsewhere).
+- NAVIGATION: You successfully moved to a new page. Proceed with the new content.
+- CONTENT: Your action updated the page content (AJAX, search results, etc). Look for new elements.
+- UI_ONLY: Visual change only (animation/hover). Core content unchanged — try a different approach.
+
+CRITICAL RULE: If the feedback says NO_CHANGE, you MUST try something different.
+Never repeat an action that had no effect. This is the #1 cause of loops.
 """
 
 FEW_SHOT_EXAMPLES = [
